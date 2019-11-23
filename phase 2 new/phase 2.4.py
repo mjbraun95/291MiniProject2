@@ -31,7 +31,7 @@ def b_dates():
             file.close()
 
     os.chdir("../phase2output/")
-    os.system('db_load -f tempdates.txt -T -t btree miniproject2.db')
+    os.system('db_load -f tempdate.txt -T -t btree miniproject2.db')
     os.remove("tempdate.txt")
     #os.remove("date.txt")
     os.system('db_dump -p -f da.idx miniproject2.db')

@@ -23,9 +23,9 @@ def hash_rec():
                 else:
                     break
             start = len(key)
-            print(key)
+            #print(key)
             data = line[start:]
-            print(data)
+            #print(data)
             #data= data.replace('/', '')
             #database.put(b'%s' % (key.encode()), data)
             os.chdir("../phase2output/")
@@ -35,7 +35,7 @@ def hash_rec():
 
     #os.chdir("C:\\Users\\Ishara\\OneDrive\\University of Alberta\\2019\\YEAR 2\\CMPUT 291\\mini project 2")
     os.chdir("../phase2output/")
-    os.system('db_load -f temprecs.txt -T -t hash miniproject2.db')
+    os.system('db_load -f temprecs.txt -T -t btree miniproject2.db')
     #os.remove("temprecs.txt")
     os.system('db_dump -p -f re.idx miniproject2.db')
 
