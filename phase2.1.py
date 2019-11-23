@@ -2,7 +2,7 @@ from bsddb3 import db
 import re
 import os
 database = db.DB() #handle for Berkeley DB database
-os.chdir("../phase2output/")
+os.chdir("phase2output/")
 DB_File = "miniproject2.db"
 database.open(DB_File ,None, db.DB_BTREE, db.DB_CREATE)
 #database.open(DB_File ,None, DB_BTREE, db.DB_CREATE)
