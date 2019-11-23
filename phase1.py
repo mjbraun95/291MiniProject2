@@ -15,8 +15,9 @@ from xml.etree import ElementTree
 import re
 
 
-def create_terms():
-
+def create_terms(xmlInput):
+    xml_iter = ElementTree.iterparse(xmlInput, events = ('start','end'))
+    open("phase1output/terms.txt", 'w').close()
     for event, elem in xml_iter:
         text = ''
         if event == 'start':
@@ -47,7 +48,9 @@ def create_terms():
             print(end='')
             elem.clear()
 
-def create_emails():
+def create_emails(xmlInput):
+    xml_iter = ElementTree.iterparse(xmlInput, events = ('start','end'))
+    open("phase1output/emails.txt", 'w').close()
     for event, elem in xml_iter:
         text = ''
         if event == 'start':
@@ -80,7 +83,9 @@ def create_emails():
             print(end='')
             elem.clear()
 
-def create_dates():
+def create_dates(xmlInput):
+    xml_iter = ElementTree.iterparse(xmlInput, events = ('start','end'))
+    open("phase1output/dates.txt", 'w').close()
     for event, elem in xml_iter:
         text = ''
         if event == 'start':
@@ -104,7 +109,9 @@ def get_rowid(elem):
         #file.write('<%s>' % elem.tag)
         file.close()
 
-def create_recs():
+def create_recs(xmlInput):
+    xml_iter = ElementTree.iterparse(xmlInput, events = ('start','end'))
+    open("phase1output/recs.txt", 'w').close()
     for event, elem in xml_iter:
         if event == 'start':
             if elem.tag == 'mail':
@@ -131,25 +138,26 @@ def create_recs():
             #elem.clear()
 
 if __name__ == "__main__":
-    xmlInput = input("Name of xml file: ")
-    xml_iter = ElementTree.iterparse(xmlInput, events = ('start','end'))
+    xmlInput = input("Name of xml file (default= '1k.xml'): ")
+    if xmlInput == "":
+        xmlInput = "1k.xml"
     ct = input("Create terms? (Y/n)")
     ce = input("Create emails? (Y/n)")
     cd = input("Create dates? (Y/n)")
     cr = input("Create recs? (Y/n)")
     if ct != "n" and ct != "N":
         print("Creating terms...", end="")
-        create_terms()
+        create_terms(xmlInput)
         print("Done!")
     if ce != "n" and ce != "N":
         print("Creating emails...", end="")
-        create_emails()
+        create_emails(xmlInput)
         print("Done!")
     if cd != "n" and cd != "N":
         print("Creating dates...", end="")
-        create_dates()
+        create_dates(xmlInput)
         print("Done!")
     if cr != "n" and cr != "N":
         print("Creating recs...", end="")
-        create_recs()
+        create_recs(xmlInput)
         print("Done!")
