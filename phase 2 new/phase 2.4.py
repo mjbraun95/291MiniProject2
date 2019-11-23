@@ -7,9 +7,10 @@ database.open(DB_File, None, db.DB_BTREE, db.DB_CREATE)
 curs = database.cursor()
 
 def b_dates():
-    os.chdir("C:\\Users\\Ishara\\OneDrive\\University of Alberta\\2019\\YEAR 2\\CMPUT 291\\mini project 2")
-    os.system('sort dates.txt > date.txt')
-    with open('date.txt', 'r') as datesfile:
+    os.chdir("../phase1output/")
+    open ('tempdate.txt', 'w').close()
+    #os.system('sort dates.txt > date.txt')
+    with open('dates.txt', 'r') as datesfile:
         for line in datesfile:
             line = line.strip()
             #if char in line() !='\n':
@@ -28,9 +29,9 @@ def b_dates():
 
 
     os.system('db_load -f tempdates.txt -T -t btree miniproject2.db')
-    os.remove("tempdates.txt")
-    os.remove("date.txt")
-    os.system('db_dump -p -f da.idx miniproject2.db')
+    #os.remove("tempdates.txt")
+    #os.remove("date.txt")
+    #os.system('db_dump -p -f da.idx miniproject2.db')
 
     for key in database.keys():
         print('{}: {}'.format(key, database[key]))

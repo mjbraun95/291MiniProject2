@@ -9,8 +9,8 @@ curs = database.cursor()
 
 def hash_rec():
     # a hash index on recs.txt with row ids as keys and the full email record as data,
-
-
+    os.chdir("../phase1output/")
+    open ('temprecs.txt', 'w').close()
     with open('recs.txt', 'r') as recfile:
         #id = recfile.read(1).encode()
         for line in recfile:
@@ -30,10 +30,10 @@ def hash_rec():
             file.write('%s\n%s' % (key, data))
             file.close()
 
-    os.chdir("C:\\Users\\Ishara\\OneDrive\\University of Alberta\\2019\\YEAR 2\\CMPUT 291\\mini project 2")
+    #os.chdir("C:\\Users\\Ishara\\OneDrive\\University of Alberta\\2019\\YEAR 2\\CMPUT 291\\mini project 2")
     os.system('db_load -f temprec.txt -T -t hash miniproject2.db')
-    os.remove("temprec.txt")
-    os.system('db_dump -p -f re.idx miniproject2.db')
+    #os.remove("temprec.txt")
+    #os.system('db_dump -p -f re.idx miniproject2.db')
 
     for key in database.keys():
         print('{}: {}'.format(key, database[key]))

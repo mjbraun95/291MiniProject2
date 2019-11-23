@@ -7,7 +7,7 @@ database.open(DB_File, None, db.DB_BTREE, db.DB_CREATE)
 curs = database.cursor()
 
 def b_emails():
-
+    open ('emails.txt', 'w').close()
     with open('emails.txt', 'r') as emailfile:
         for line in emailfile:
             line = line.strip()
