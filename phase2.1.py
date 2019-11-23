@@ -1,3 +1,4 @@
+####RECS####
 from bsddb3 import db
 import re
 import os
@@ -11,7 +12,7 @@ def hash_rec():
     # a hash index on recs.txt with row ids as keys and the full email record as data,
 
 
-    with open('recs.txt', 'r') as recfile:
+    with open("phase2input/recs.txt", "r") as recfile:
         #id = recfile.read(1).encode()
         for line in recfile:
             key = ''
@@ -30,6 +31,7 @@ def hash_rec():
             file.close()
 
     os.chdir("C:\\Users\\Ishara\\OneDrive\\University of Alberta\\2019\\YEAR 2\\CMPUT 291\\mini project 2")
+    # os.chdir("C:\\Users\\Ishara\\OneDrive\\University of Alberta\\2019\\YEAR 2\\CMPUT 291\\mini project 2")
     os.system('db_load -f temprec.txt -T -t btree miniproject2.db')
     #os.remove("temprec.txt")
 

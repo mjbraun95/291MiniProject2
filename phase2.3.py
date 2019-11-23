@@ -8,7 +8,7 @@ curs = database.cursor()
 
 def b_emails():
     file = open("tempemails.txt", "a")
-    with open('emails.txt', 'r') as emailfile:
+    with open("phase2input/emails.txt", "r") as emailfile:
         for line in emailfile:
             line = line.strip()
             #print(line)

@@ -8,7 +8,7 @@ curs = database.cursor()
 
 def b_terms():
 
-    with open('terms.txt', 'r') as termfile:
+    with open("phase2input/terms.txt", "r") as termfile:
         for line in termfile:
             line = line.strip()
             #print(line)

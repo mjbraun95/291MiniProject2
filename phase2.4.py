@@ -8,7 +8,7 @@ curs = database.cursor()
 
 def b_dates():
 
-    with open('dates.txt', 'r') as datesfile:
+    with open("phase2input/dates.txt", "r") as datesfile:
         for line in datesfile:
             line = line.strip()
             #if char in line() !='\n':
