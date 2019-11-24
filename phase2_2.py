@@ -14,7 +14,9 @@ def b_terms():
     os.chdir("../phase2output/")
     open ('tempterms.txt', 'w').close()
     os.chdir("../phase1output/")
-    with open('terms.txt', 'r') as termfile:
+    os.system('sort -u terms.txt > ../phase2output/term.txt')
+    os.chdir("../phase2output/")
+    with open('term.txt', 'r') as termfile:
         for line in termfile:
             line = line.strip()
             #print(line)
@@ -37,6 +39,7 @@ def b_terms():
     os.chdir("../phase2output/")
     os.system('db_load -f tempterms.txt -T -t btree miniproject2.db')
     os.remove("tempterms.txt")
+    os.remove("term.txt")
     #os.remove("output.txt")
     os.system('db_dump -p -f te.idx miniproject2.db')
 

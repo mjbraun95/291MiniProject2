@@ -13,7 +13,9 @@ def hash_recs():
     os.chdir("../phase2output/")
     open ('temprecs.txt', 'w').close()
     os.chdir("../phase1output/")
-    with open('recs.txt', 'r') as recfile:
+    os.system('sort -u recs.txt > ../phase2output/rec.txt')
+    os.chdir("../phase2output/")
+    with open('rec.txt', 'r') as recfile:
         #id = recfile.read(1).encode()
         for line in recfile:
             key = ''
@@ -34,8 +36,10 @@ def hash_recs():
             file.close()
 
     os.chdir("../phase2output/")
-    os.system('qwx')
+    #os.system('qwx')
+    os.system('db_load -f temprecs.txt -T -t btree miniproject2.db')
     os.remove("temprecs.txt")
+    os.remove("rec.txt")
     os.system('db_dump -p -f re.idx miniproject2.db')
 
     for key in database.keys():

@@ -11,7 +11,9 @@ def b_emails():
     os.chdir("../phase2output/")
     open ('tempemails.txt', 'w').close()
     os.chdir("../phase1output/")
-    with open('emails.txt', 'r') as emailfile:
+    os.system('sort -u emails.txt > ../phase2output/email.txt')
+    os.chdir("../phase2output/")
+    with open('email.txt', 'r') as emailfile:
         for line in emailfile:
             line = line.strip()
             print(line)
@@ -32,6 +34,7 @@ def b_emails():
     os.chdir("../phase2output/")
     os.system('db_load -f tempemails.txt -T -t btree miniproject2.db')
     os.remove("tempemails.txt")
+    os.remove("email.txt")
     os.system('db_dump -p -f em.idx miniproject2.db')
 
     for key in database.keys():

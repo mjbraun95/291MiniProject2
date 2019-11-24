@@ -11,8 +11,10 @@ def b_dates():
     os.chdir("../phase2output/")
     open ('tempdates.txt', 'w').close()
     os.chdir("../phase1output/")
+    os.system('sort -u dates.txt > ../phase2output/date.txt')
+    os.chdir("../phase2output/")
     #os.system('sort dates.txt > dates.txt')
-    with open('dates.txt', 'r') as datesfile:
+    with open('date.txt', 'r') as datesfile:
         for line in datesfile:
             line = line.strip()
             #if char in line() !='\n':
@@ -33,6 +35,7 @@ def b_dates():
     os.chdir("../phase2output/")
     os.system('db_load -f tempdates.txt -T -t btree miniproject2.db')
     os.remove("tempdates.txt")
+    os.remove("date.txt")
     #os.remove("dates.txt")
     os.system('db_dump -p -f da.idx miniproject2.db')
 
