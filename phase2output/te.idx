@@ -1,8 +1,26 @@
 VERSION=3
 format=print
 type=btree
-db_pagesize=16384
+db_pagesize=4096
 HEADER=END
+ 2000/09/13
+ 34
+ 2000/09/18
+ 33
+ 2000/09/22
+ 27
+ 2000/09/25
+ 26
+ 2000/09/26
+ 19
+ 2000/10/02
+ 12
+ 2000/10/03
+ 11
+ 2000/10/05
+ 5
+ 2000/12/13
+ 13
  230
  13
  37031
@@ -27,6 +45,8 @@ HEADER=END
  13
  attention
  13
+ bcc-alb@cpuc.ca.gov
+ 13
  bday
  26
  been
@@ -47,6 +67,8 @@ HEADER=END
  13
  category
  5
+ cc-alb@cpuc.ca.gov
+ 13
  chair
  13
  check
@@ -125,6 +147,10 @@ HEADER=END
  27
  from
  33
+ from-aod@newsdata.com
+ 13
+ from-phillip.allen@enron.com
+ 34
  gas
  27
  get
@@ -305,6 +331,26 @@ HEADER=END
  34
  time
  19
+ to-bs_stone@yahoo.com
+ 12
+ to-christopher.calger@enron.com
+ 23
+ to-cindy.cicchetti@enron.com
+ 19
+ to-david.delainey@enron.com
+ 5
+ to-jsmith@austintx.com
+ 33
+ to-kathy.moore@enron.com
+ 27
+ to-muller@thedoghousemail.com
+ 26
+ to-stagecoachmama@hotmail.com
+ 34
+ to-stouchstone@natsource.com
+ 11
+ to-western.price.survey.contacts@ren-6.cais.net
+ 13
  today
  27
  trading

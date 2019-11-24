@@ -1,14 +1,14 @@
 from bsddb3 import db
+import bsddb3
 import re
 import os
-database = db.DB() #handle for Berkeley DB database
-os.chdir("../phase2output/")
-DB_File = "miniproject2.db"
-database.open(DB_File ,None, db.DB_BTREE, db.DB_CREATE)
-#database.open(DB_File ,None, DB_BTREE, db.DB_CREATE)
-curs = database.cursor()
 
-def hash_rec():
+def hash_recs():
+    database = db.DB() #handle for Berkeley DB database
+    os.chdir("phase2output/")
+    DB_File = "miniproject2.db"
+    database.open(DB_File ,None, db.DB_BTREE, db.DB_CREATE)
+    curs = database.cursor()
     # a hash index on recs.txt with row ids as keys and the full email record as data,
     os.chdir("../phase2output/")
     open ('temprecs.txt', 'w').close()
@@ -33,10 +33,9 @@ def hash_rec():
             file.write('%s\n%s' % (key, data))
             file.close()
 
-    #os.chdir("C:\\Users\\Ishara\\OneDrive\\University of Alberta\\2019\\YEAR 2\\CMPUT 291\\mini project 2")
     os.chdir("../phase2output/")
-    os.system('db_load -f temprecs.txt -T -t btree miniproject2.db')
-    #os.remove("temprecs.txt")
+    os.system('qwx')
+    os.remove("temprecs.txt")
     os.system('db_dump -p -f re.idx miniproject2.db')
 
     for key in database.keys():
@@ -44,8 +43,10 @@ def hash_rec():
 
     result = database.get(b'5')
     print(result)
+    os.chdir("../")
 
     curs.close()
     database.close()
 
-hash_rec()
+if __name__ == "__main__":
+	hash_recs()

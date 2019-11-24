@@ -1,13 +1,13 @@
 from bsddb3 import db
 import re
 import os
-database = db.DB() #handle for Berkeley DB database
-os.chdir("phase2output/")
-DB_File = "miniproject2.db"
-database.open(DB_File, None, db.DB_BTREE, db.DB_CREATE)
-curs = database.cursor()
 
 def b_emails():
+    database = db.DB() #handle for Berkeley DB database
+    os.chdir("phase2output/")
+    DB_File = "miniproject2.db"
+    database.open(DB_File, None, db.DB_BTREE, db.DB_CREATE)
+    curs = database.cursor()
     os.chdir("../phase2output/")
     open ('tempemails.txt', 'w').close()
     os.chdir("../phase1output/")
@@ -27,6 +27,7 @@ def b_emails():
             file.write('%s\n%s\n' % (key, data))
             file.close()
 
+    # input("Press enter to continue.")
     #os.chdir("C:\\Users\\Ishara\\OneDrive\\University of Alberta\\2019\\YEAR 2\\CMPUT 291\\mini project 2")
     os.chdir("../phase2output/")
     os.system('db_load -f tempemails.txt -T -t btree miniproject2.db')
@@ -38,8 +39,10 @@ def b_emails():
 
     result = database.get(b'bcc-alb@cpuc.ca.gov')
     print(result)
+    os.chdir("../")
 
     curs.close()
     database.close()
 
-b_emails()
+if __name__ == "__main__":
+    b_emails()

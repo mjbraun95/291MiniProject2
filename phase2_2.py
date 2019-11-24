@@ -1,14 +1,13 @@
 from bsddb3 import db
 import re
 import os
-database = db.DB() #handle for Berkeley DB database
-os.chdir("phase2output/")
-DB_File = "miniproject2.db"
-database.open(DB_File, None, db.DB_BTREE, db.DB_CREATE)
-curs = database.cursor()
 
 def b_terms():
-    
+    database = db.DB() #handle for Berkeley DB database
+    os.chdir("phase2output/")
+    DB_File = "miniproject2.db"
+    database.open(DB_File, None, db.DB_BTREE, db.DB_CREATE)
+    curs = database.cursor()
     #os.chdir("C:\\Users\\Ishara\\OneDrive\\University of Alberta\\2019\\YEAR 2\\CMPUT 291\\mini project 2")
     #os.system('sort -u terms.txt > output.txt')
     #os.chdir("../phase1output/")
@@ -46,8 +45,10 @@ def b_terms():
 
     result = database.get(b'dave')
     print(result)
+    os.chdir("../")
 
     curs.close()
     database.close()
 
-b_terms()
+if __name__ == "__main__":
+    b_terms()
