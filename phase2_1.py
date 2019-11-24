@@ -4,9 +4,10 @@ import re
 import os
 
 def hash_recs():
+    open("phase2output/re.idx", 'w').close()
     database = db.DB() #handle for Berkeley DB database
     os.chdir("phase2output/")
-    DB_File = "miniproject2.db"
+    DB_File = "recs.db"
     database.open(DB_File ,None, db.DB_BTREE, db.DB_CREATE)
     curs = database.cursor()
     # a hash index on recs.txt with row ids as keys and the full email record as data,
@@ -37,10 +38,10 @@ def hash_recs():
 
     os.chdir("../phase2output/")
     #os.system('qwx')
-    os.system('db_load -f temprecs.txt -T -t btree miniproject2.db')
+    os.system('db_load -f temprecs.txt -T -t btree recs.db')
     os.remove("temprecs.txt")
     os.remove("rec.txt")
-    os.system('db_dump -p -f re.idx miniproject2.db')
+    os.system('db_dump -p -f re.idx recs.db')
 
     for key in database.keys():
         print('{}: {}'.format(key, database[key]))
@@ -50,7 +51,7 @@ def hash_recs():
     os.chdir("../")
 
     curs.close()
-    database.close()
+    #database.close()
 
 if __name__ == "__main__":
 	hash_recs()

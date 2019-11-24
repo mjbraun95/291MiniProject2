@@ -3,9 +3,10 @@ import re
 import os
 
 def b_dates():
+    open("phase1output/da.idx", 'w').close()
     database = db.DB() #handle for Berkeley DB database
     os.chdir("phase2output/")
-    DB_File = "miniproject2.db"
+    DB_File = "dastes.db"
     database.open(DB_File, None, db.DB_BTREE, db.DB_CREATE)
     curs = database.cursor()
     os.chdir("../phase2output/")
@@ -33,11 +34,11 @@ def b_dates():
             file.close()
 
     os.chdir("../phase2output/")
-    os.system('db_load -f tempdates.txt -T -t btree miniproject2.db')
+    os.system('db_load -f tempdates.txt -T -t btree dates.db')
     os.remove("tempdates.txt")
     os.remove("date.txt")
     #os.remove("dates.txt")
-    os.system('db_dump -p -f da.idx miniproject2.db')
+    os.system('db_dump -p -f da.idx dates.db')
 
     for key in database.keys():
         print('{}: {}'.format(key, database[key]))

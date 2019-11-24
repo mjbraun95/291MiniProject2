@@ -3,9 +3,10 @@ import re
 import os
 
 def b_terms():
+    open("phase2output/te.idx", 'w').close()
     database = db.DB() #handle for Berkeley DB database
     os.chdir("phase2output/")
-    DB_File = "miniproject2.db"
+    DB_File = "terms.db"
     database.open(DB_File, None, db.DB_BTREE, db.DB_CREATE)
     curs = database.cursor()
     #os.chdir("C:\\Users\\Ishara\\OneDrive\\University of Alberta\\2019\\YEAR 2\\CMPUT 291\\mini project 2")
@@ -37,11 +38,11 @@ def b_terms():
     curs = database.cursor()
     #os.chdir("../phase1output/")
     os.chdir("../phase2output/")
-    os.system('db_load -f tempterms.txt -T -t btree miniproject2.db')
+    os.system('db_load -f tempterms.txt -T -t btree terms.db')
     os.remove("tempterms.txt")
     os.remove("term.txt")
     #os.remove("output.txt")
-    os.system('db_dump -p -f te.idx miniproject2.db')
+    os.system('db_dump -p -f te.idx terms.db')
 
     for key in database.keys():
         print('{}: {}'.format(key, database[key]))
