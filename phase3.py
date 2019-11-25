@@ -5,11 +5,28 @@ import os
 
 def parseRecord(record,lookIn,lookFor):
     startStr = "<{}>".format(lookIn)
-    start = record.find(startStr)
+    start = record.find(startStr) + len(startStr)
     endStr = "</{}>".format(lookIn)
     end = record.find(endStr)
     # print("record[start:end]: {}".format(record[start:end]))
     if record[start:end].lower().find(lookFor) != -1:
+        # print("Found <{}>{}!".format(lookIn,lookFor))
+        return True
+    else:
+        return False
+
+def parseregexRecord(record,lookIn,lookFor):
+    startStr = "<{}>".format(lookIn)
+    start = record.find(startStr) + len(startStr)
+    endStr = "</{}>".format(lookIn)
+    end = record.find(endStr)
+    p = re.compile(lookFor + "*")
+    # print("p: {}".format(p))
+    # print("lookFor[:-1] + '*': |{}|".format(lookFor[:-1] + "*"))
+    # print("record[start:end]: {}".format(record[start:end]))
+    # print("record[start:end].lower(): {}".format(record[start:end].lower()))
+    # print("p.match(record[start:end].lower()): {}".format(p.match(record[start:end].lower())))
+    if p.match(record[start:end].lower()) != None:
         # print("Found <{}>{}!".format(lookIn,lookFor))
         return True
     else:
@@ -34,7 +51,7 @@ def parseidx(key, idxFile):
 def parseregexidx(key, idxFile):
     idxOpen = open('phase2output/{}'.format(idxFile), 'r')
     valueArray = []
-    p = re.compile(key[:-1] + "*")
+    p = re.compile(key + "*")
     for lineIndex, line in enumerate(idxOpen):
         # print("line[0]: {}".format(line[0]))
         if line[0] != " ":
@@ -179,14 +196,20 @@ def processWord(word):
         if lookFor[-1] == "%":
             # print("Lookfor: |{}|".format(lookFor))
             roughrowids = parseregexidx(lookFor, "te.idx")
+            rowids = []
+            for roughrowid in roughrowids:
+                records = parseidx(roughrowid, "re.idx")
+                for record in records:
+                    if parseregexRecord(record, lookIn, lookFor) == True and (roughrowid not in rowids):
+                        rowids.append(roughrowid)
         else:
             roughrowids = parseidx(lookFor, "te.idx")
-        rowids = []
-        for roughrowid in roughrowids:
-            records = parseidx(roughrowid, "re.idx")
-            for record in records:
-                if parseRecord(record, lookIn, lookFor) == True and (roughrowid not in rowids):
-                    rowids.append(roughrowid)
+            rowids = []
+            for roughrowid in roughrowids:
+                records = parseidx(roughrowid, "re.idx")
+                for record in records:
+                    if parseRecord(record, lookIn, lookFor) == True and (roughrowid not in rowids):
+                        rowids.append(roughrowid)
         # print("rowids: {}".format(rowids))
         return rowids
 
