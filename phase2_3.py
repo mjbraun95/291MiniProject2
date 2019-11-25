@@ -38,8 +38,13 @@ def b_emails():
     os.remove("email.txt")
     os.system('db_dump -p -f em.idx emails.db')
 
-    for key in database.keys():
-        print('{}: {}'.format(key, database[key]))
+    try:
+        for key in database.keys():
+            print('{}: {}'.format(key, database[key]))
+    except db.DBPageNotFoundError:
+        os.chdir("../")
+        b_emails()
+        return
 
     result = database.get(b'bcc-alb@cpuc.ca.gov')
     print(result)

@@ -15,7 +15,7 @@ def b_terms():
     os.chdir("../phase2output/")
     open ('tempterms.txt', 'w').close()
     os.chdir("../phase1output/")
-    os.system('sort -u terms.txt > ../phase2output/term.txt')
+    os.system('sort terms.txt > ../phase2output/term.txt')
     os.chdir("../phase2output/")
     with open('term.txt', 'r') as termfile:
         for line in termfile:
@@ -44,9 +44,13 @@ def b_terms():
     #os.remove("output.txt")
     os.system('db_dump -p -f te.idx terms.db')
 
-    for key in database.keys():
-        print('{}: {}'.format(key, database[key]))
-
+    try:
+        for key in database.keys():
+            print('{}: {}'.format(key, database[key]))
+    except db.DBPageNotFoundError:
+        os.chdir("../")
+        b_terms()
+        return
     result = database.get(b'dave')
     print(result)
     os.chdir("../")

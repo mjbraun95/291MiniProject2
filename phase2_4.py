@@ -40,8 +40,13 @@ def b_dates():
     #os.remove("dates.txt")
     os.system('db_dump -p -f da.idx dates.db')
 
-    for key in database.keys():
-        print('{}: {}'.format(key, database[key]))
+    try:
+        for key in database.keys():
+            print('{}: {}'.format(key, database[key]))
+    except db.DBPageNotFoundError:
+        os.chdir("../")
+        b_dates()
+        return
 
     result = database.get(b'2000/10/05')
     print(result)

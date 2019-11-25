@@ -1,5 +1,4 @@
 from bsddb3 import db
-import bsddb3
 import re
 import os
 
@@ -8,7 +7,7 @@ def hash_recs():
     database = db.DB() #handle for Berkeley DB database
     os.chdir("phase2output/")
     DB_File = "recs.db"
-    database.open(DB_File ,None, db.DB_BTREE, db.DB_CREATE)
+    database.open(DB_File, None, db.DB_BTREE, db.DB_CREATE)
     curs = database.cursor()
     # a hash index on recs.txt with row ids as keys and the full email record as data,
     os.chdir("../phase2output/")
@@ -42,16 +41,19 @@ def hash_recs():
     os.remove("temprecs.txt")
     os.remove("rec.txt")
     os.system('db_dump -p -f re.idx recs.db')
-
-    for key in database.keys():
-        print('{}: {}'.format(key, database[key]))
-
+    try:
+        for key in database.keys():
+            print('{}: {}'.format(key, database[key]))
+    except db.DBPageNotFoundError:
+        os.chdir("../")
+        hash_recs()
+        return
     result = database.get(b'5')
     print(result)
     os.chdir("../")
 
     curs.close()
-    #database.close()
+    database.close()
 
 if __name__ == "__main__":
 	hash_recs()
