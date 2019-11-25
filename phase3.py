@@ -24,10 +24,27 @@ def parseidx(key, idxFile):
             # print("meta stuff")
             continue
         else:
-            if line[1:-1].lower() == key:
-                print("match found in {} for {} on line {}!".format(idxFile, key,lineIndex))
+            value = next(idxOpen)[1:-1]
+            if line[1:-1].lower() == key and (value not in valueArray):
+                print("new match found in {} for {} on line {}!".format(idxFile, key,lineIndex))
                 # print("next(idxOpen)[1:-1]: {}".format(next(idxOpen)[1:-1]))
-                value = next(idxOpen)[1:-1]
+                valueArray.append(value)
+    return valueArray
+
+def parseregexidx(key, idxFile):
+    idxOpen = open('phase2output/{}'.format(idxFile), 'r')
+    valueArray = []
+    p = re.compile(key[:-1] + "*")
+    for lineIndex, line in enumerate(idxOpen):
+        # print("line[0]: {}".format(line[0]))
+        if line[0] != " ":
+            # print("meta stuff")
+            continue
+        else:
+            value = next(idxOpen)[1:-1]
+            if p.match(line[1:-1].lower()) != None and (value not in valueArray):
+                print("new match found in {} for {} on line {}!".format(idxFile, key,lineIndex))
+                # print("next(idxOpen)[1:-1]: {}".format(next(idxOpen)[1:-1]))
                 valueArray.append(value)
     return valueArray
 
@@ -52,17 +69,39 @@ def parsedateidx(key, idxFile, operator):
                 print("match found in {} for {} {} {} on line {}!".format(idxFile, line[1:-1], operator, key,lineIndex))
                 value = next(idxOpen)[1:-1]
                 valueArray.append(value)
+            elif operator == ">=" and line[1:-1] >= key:
+                print("match found in {} for {} {} {} on line {}!".format(idxFile, line[1:-1], operator, key,lineIndex))
+                value = next(idxOpen)[1:-1]
+                valueArray.append(value)
+            elif operator == "<=" and line[1:-1] <= key:
+                print("match found in {} for {} {} {} on line {}!".format(idxFile, line[1:-1], operator, key,lineIndex))
+                value = next(idxOpen)[1:-1]
+                valueArray.append(value)
 
     return valueArray
 
+
+
 def processWord(word):
+    operator = None
+    lookFor = None
+    lookIn = None
+    if len(word) == 0:
+        return 1
+    while word[0] == " ":
+        word = word[1:]
     colonIndex = word.find(":")
+    lessThanEqualToIndex = word.find("<=")
     lessThanIndex = word.find("<")
     greaterThanIndex = word.find(">")
+    greaterThanEqualToIndex = word.find(">=")
 
     if colonIndex != -1:
         operator = ":"
         lookFor = word[colonIndex+1:].lower()
+        while lookFor[0] == " ":
+            lookFor = lookFor[1:]
+
         if word.find("date") == 0:
             lookIn = "date"
         elif word.find("subj") == 0:
@@ -81,7 +120,8 @@ def processWord(word):
             print("Invalid argument(s). Please try again.")
             return 1
 
-    elif lessThanIndex != -1:
+    elif lessThanIndex != -1 and lessThanEqualToIndex == -1:
+        print("TURE")
         operator = "<"
         lookFor = word[lessThanIndex+1:].lower()
         if word.find("date") == 0:
@@ -89,7 +129,7 @@ def processWord(word):
         else:
             print("Invalid argument(s). Please try again.")
             return 1
-    elif greaterThanIndex != -1:
+    elif greaterThanIndex != -1 and greaterThanEqualToIndex == -1:
         operator = ">"
         lookFor = word[greaterThanIndex+1:].lower()
         if word.find("date") == 0:
@@ -98,18 +138,54 @@ def processWord(word):
             print("Invalid argument(s). Please try again.")
             return 1
 
+    elif lessThanEqualToIndex != -1:
+        operator = "<="
+        lookFor = word[lessThanIndex+2:].lower()
+        if word.find("date") == 0:
+            lookIn = "date"
+        else:
+            print("Invalid argument(s). Please try again.")
+            return 1
+    elif greaterThanEqualToIndex != -1:
+        operator = ">="
+        lookFor = word[greaterThanIndex+2:].lower()
+        if word.find("date") == 0:
+            lookIn = "date"
+        else:
+            print("Invalid argument(s). Please try again.")
+            return 1
+
+
+    # return
+
+
     #Search terms case
-    else:
-        rowids = parseidx(word, "te.idx")
+    if operator == None:
+        lookFor = word
+        print("lookFor: {}".format(lookFor))
+        print("lookIn: {}".format(lookIn))
+        # rowids = parseidx(word, "te.idx")
+        # print("rowids: {}".format(rowids))
+        # return rowids
+
+        if lookFor[-1] == "%":
+            rowids = parseregexidx(lookFor, "te.idx")
+        else:
+            rowids = parseidx(lookFor, "te.idx")
         print("rowids: {}".format(rowids))
         return rowids
+
+
     if lookIn == "subj" or lookIn == "body":
-        roughrowids = parseidx(lookFor, "te.idx")
+        if lookFor[-1] == "%":
+            roughrowids = parseregexidx(lookFor, "te.idx")
+        else:
+            roughrowids = parseidx(lookFor, "te.idx")
         rowids = []
         for roughrowid in roughrowids:
             records = parseidx(roughrowid, "re.idx")
             for record in records:
-                if parseRecord(record, lookIn, lookFor) == True:
+                if parseRecord(record, lookIn, lookFor) == True and (roughrowid not in rowids):
                     rowids.append(roughrowid)
         print("rowids: {}".format(rowids))
         return rowids
@@ -127,11 +203,15 @@ def processWord(word):
         print("rowids: {}".format(rowids))
         return rowids
     
+
+
+
+
 quitProgram = False
 output = "full"
 while quitProgram != True:
     command = ""
-    command = input("")
+    command = input("").lower()
     if command == "output=full":
         if output == "full":
             print("Output already in full mode!")
@@ -146,7 +226,7 @@ while quitProgram != True:
             print("Output changed to brief mode.")
     
     spaceArray = [-1]
-    [spaceArray.append(m.start()) for m in re.finditer(' ', command)]
+    [spaceArray.append(m.start()+1) for m in re.finditer('[a-z0-9] +[a-z0-9]', command)]
     # print("spaceArray: {}".format(spaceArray))
     rowidQueries = []
     for i in range(len(spaceArray)):
@@ -163,6 +243,20 @@ while quitProgram != True:
             thisWord = processWord(command[startIndex:endIndex])
             if thisWord != 1:
                 rowidQueries.append(thisWord)
+
     rowidQueries.sort(key=len)
+    
     for index, rowIdQuery in enumerate(rowidQueries):
         print("rowidQueries[{}]: {}".format(index, rowIdQuery))
+    finalRowidQuery = []
+    for rowID in rowidQueries[0]:
+        inAllArrays = True
+        for rowIdQuery in rowidQueries:
+            if rowID not in rowIdQuery:
+                inAllArrays = False
+                break
+        if inAllArrays == True:
+            finalRowidQuery.append(rowID)
+        else:
+            continue
+    print("finalRowidQuery: {}".format(finalRowidQuery))

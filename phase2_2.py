@@ -46,8 +46,8 @@ def b_terms():
     os.chdir("../phase2output/")
     os.system('db_load -f tempterms.txt -c duplicates=1 -T -t btree terms.db')
     # os.system('db_load -c duplicates=1 -f tempterms.txt -T -t btree terms.db')
-    # os.remove("tempterms.txt")
-    # os.remove("term.txt")
+    os.remove("tempterms.txt")
+    os.remove("term.txt")
     #os.remove("output.txt")
     os.system('db_dump -p -f te.idx terms.db')
 
@@ -56,7 +56,7 @@ def b_terms():
             print('{}: {}'.format(key, database[key]))
     except db.DBPageNotFoundError:
         os.chdir("../")
-        b_terms()
+        # b_terms()
         return
     result = database.get(b'dave')
     print(result)
