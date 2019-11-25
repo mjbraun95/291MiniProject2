@@ -25,31 +25,16 @@ def b_emails():
             print(key)
             data = line[1]
             print(data)
-            #database.put(b'%s' % (key), data)
             os.chdir("../phase2output/")
             file.write('%s\n%s\n' % (key, data))
     file.close()
-
-    # input("Press enter to continue.")
-    #os.chdir("C:\\Users\\Ishara\\OneDrive\\University of Alberta\\2019\\YEAR 2\\CMPUT 291\\mini project 2")
     os.chdir("../phase2output/")
     os.system('db_load -f tempemails.txt -T -t btree emails.db')
     os.remove("tempemails.txt")
     os.remove("email.txt")
     os.system('db_dump -p -f em.idx emails.db')
-
-    # try:
-    #     for key in database.keys():
-    #         print('{}: {}'.format(key, database[key]))
-    # except db.DBPageNotFoundError:
-    #     os.chdir("../")
-    #     b_emails()
-    #     return
-
-    result = database.get(b'pallen@enron.com')
-    # print(result)
+    result = 0
     os.chdir("../")
-
     curs.close()
     database.close()
     return result

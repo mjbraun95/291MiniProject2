@@ -14,22 +14,14 @@ def b_dates():
     os.chdir("../phase1output/")
     os.system('sort -u dates.txt > ../phase2output/date.txt')
     os.chdir("../phase2output/")
-    #os.system('sort dates.txt > dates.txt')
     file = open("tempdates.txt", "a")
     with open('date.txt', 'r') as datesfile:
         for line in datesfile:
             line = line.strip()
-            #if char in line() !='\n':
-            #print(line)
             line = re.split("[:]+", line)
-            #print(line)
             key = line[0]
-            #print(key)
             data = line[1]
-            #print(data)
-            #database.put(b'%s' % (key), data)
             os.chdir("../phase2output/")
-            #print(key)
             file.write('%s\n%s\n' % (key, data))
     file.close()
 
@@ -37,18 +29,8 @@ def b_dates():
     os.system('db_load -f tempdates.txt -T -t btree dates.db')
     os.remove("tempdates.txt")
     os.remove("date.txt")
-    #os.remove("dates.txt")
     os.system('db_dump -p -f da.idx dates.db')
-
-    # try:
-    #     for key in database.keys():
-    #         print('{}: {}'.format(key, database[key]))
-    # except db.DBPageNotFoundError:
-    #     os.chdir("../")
-    #     b_dates()
-    #     return
-
-    result = database.get(b'2000/12/13')
+    result = 0
     print(result)
     os.chdir("../")
 
