@@ -8,6 +8,7 @@ def b_terms():
     # env = db.DBEnv()
     database = db.DB() #handle for Berkeley DB database
     DB_File = "terms.db"
+    database.set_flags(db.DB_DUP)
     database.open(DB_File, None, db.DB_BTREE, db.DB_CREATE)
 
     
@@ -43,7 +44,7 @@ def b_terms():
     curs = database.cursor()
     #os.chdir("../phase1output/")
     os.chdir("../phase2output/")
-    os.system('db_load -f tempterms.txt -T -t btree terms.db')
+    os.system('db_load -f tempterms.txt -c duplicates=1 -T -t btree terms.db')
     # os.system('db_load -c duplicates=1 -f tempterms.txt -T -t btree terms.db')
     # os.remove("tempterms.txt")
     # os.remove("term.txt")
