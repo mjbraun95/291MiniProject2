@@ -6,7 +6,7 @@ def b_dates():
     open("phase1output/da.idx", 'w').close()
     database = db.DB() #handle for Berkeley DB database
     os.chdir("phase2output/")
-    DB_File = "dastes.db"
+    DB_File = "dates.db"
     database.open(DB_File, None, db.DB_BTREE, db.DB_CREATE)
     curs = database.cursor()
     os.chdir("../phase2output/")
