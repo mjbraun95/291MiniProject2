@@ -15,6 +15,7 @@ def hash_recs():
     os.chdir("../phase1output/")
     os.system('sort -u recs.txt > ../phase2output/rec.txt')
     os.chdir("../phase2output/")
+    file = open("temprecs.txt", "a")
     with open('rec.txt', 'r') as recfile:
         #id = recfile.read(1).encode()
         for line in recfile:
@@ -31,9 +32,8 @@ def hash_recs():
             #data= data.replace('/', '')
             #database.put(b'%s' % (key.encode()), data)
             os.chdir("../phase2output/")
-            file = open("temprecs.txt", "a")
             file.write('%s\n%s' % (key, data))
-            file.close()
+    file.close()
 
     os.chdir("../phase2output/")
     #os.system('qwx')
@@ -41,19 +41,21 @@ def hash_recs():
     os.remove("temprecs.txt")
     os.remove("rec.txt")
     os.system('db_dump -p -f re.idx recs.db')
-    try:
-        for key in database.keys():
-            print('{}: {}'.format(key, database[key]))
-    except db.DBPageNotFoundError:
-        os.chdir("../")
-        hash_recs()
-        return
-    result = database.get(b'5')
-    print(result)
+    # try:
+    #     for key in database.keys():
+    #         print('{}: {}'.format(key, database[key]))
+    # except db.DBPageNotFoundError:
+    #     os.chdir("../")
+    #     hash_recs()
+    #     return
+    result = database.get(b'1')
+    # print(result)
     os.chdir("../")
 
     curs.close()
     database.close()
+    
+    return result
 
 if __name__ == "__main__":
 	hash_recs()

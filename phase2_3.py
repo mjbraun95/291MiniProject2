@@ -14,6 +14,7 @@ def b_emails():
     os.chdir("../phase1output/")
     os.system('sort -u emails.txt > ../phase2output/email.txt')
     os.chdir("../phase2output/")
+    file = open("tempemails.txt", "a")
     with open('email.txt', 'r') as emailfile:
         for line in emailfile:
             line = line.strip()
@@ -26,9 +27,8 @@ def b_emails():
             print(data)
             #database.put(b'%s' % (key), data)
             os.chdir("../phase2output/")
-            file = open("tempemails.txt", "a")
             file.write('%s\n%s\n' % (key, data))
-            file.close()
+    file.close()
 
     # input("Press enter to continue.")
     #os.chdir("C:\\Users\\Ishara\\OneDrive\\University of Alberta\\2019\\YEAR 2\\CMPUT 291\\mini project 2")
@@ -38,20 +38,21 @@ def b_emails():
     os.remove("email.txt")
     os.system('db_dump -p -f em.idx emails.db')
 
-    try:
-        for key in database.keys():
-            print('{}: {}'.format(key, database[key]))
-    except db.DBPageNotFoundError:
-        os.chdir("../")
-        b_emails()
-        return
+    # try:
+    #     for key in database.keys():
+    #         print('{}: {}'.format(key, database[key]))
+    # except db.DBPageNotFoundError:
+    #     os.chdir("../")
+    #     b_emails()
+    #     return
 
-    result = database.get(b'bcc-alb@cpuc.ca.gov')
-    print(result)
+    result = database.get(b'pallen@enron.com')
+    # print(result)
     os.chdir("../")
 
     curs.close()
     database.close()
+    return result
 
 if __name__ == "__main__":
     b_emails()

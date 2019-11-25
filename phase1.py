@@ -11,13 +11,14 @@
         #print ('<%s>' % elem.tag)
         #print('here')
 
-from xml.etree import ElementTree
+from xml.etree import cElementTree
 import re
 
 
 def create_terms(xmlInput):
-    xml_iter = ElementTree.iterparse(xmlInput, events = ('start','end'))
+    xml_iter = cElementTree.iterparse(xmlInput, events = ('start','end'))
     open("phase1output/terms.txt", 'w').close()
+    file = open("phase1output/terms.txt", "a")
     for event, elem in xml_iter:
         text = ''
         if event == 'start':
@@ -36,21 +37,23 @@ def create_terms(xmlInput):
                     for term in text:
                         if elem.tag == 'subj' and len(term) > 2:
                             #print('write into file: s-%s:%s' % (term, rowid))
-                            file = open("phase1output/terms.txt", "a")
+                            # file = open("phase1output/terms.txt", "a")
                             file.write('s-%s:%s\n' % (term, rowid))
-                            file.close()
+                            # file.close()
                         elif elem.tag == 'body'and len(term) > 2:
                             #print('write into file: b-%s:%s' % (term, rowid))
-                            file = open("phase1output/terms.txt", "a")
+                            # file = open("phase1output/terms.txt", "a")
                             file.write('b-%s:%s\n' % (term, rowid))
-                            file.close()
+                            # file.close()
         elif event == 'end':
             print(end='')
             elem.clear()
+    file.close()
 
 def create_emails(xmlInput):
-    xml_iter = ElementTree.iterparse(xmlInput, events = ('start','end'))
+    xml_iter = cElementTree.iterparse(xmlInput, events = ('start','end'))
     open("phase1output/emails.txt", 'w').close()
+    file = open("phase1output/emails.txt", "a")
     for event, elem in xml_iter:
         text = ''
         if event == 'start':
@@ -60,32 +63,34 @@ def create_emails(xmlInput):
                 if elem.text != None:
                     text = elem.text
                     if elem.tag == 'from':
-                        file = open("phase1output/emails.txt", "a")
+                        # file = open("phase1output/emails.txt", "a")
                         file.write('from-%s:%s\n' % (text, rowid))
-                        file.close()
+                        # file.close()
                         #print('write into file: from-%s:%s' % (text, rowid))
                     elif elem.tag == 'to':
-                        file = open("phase1output/emails.txt", "a")
+                        # file = open("phase1output/emails.txt", "a")
                         file.write('to-%s:%s\n' % (text, rowid))
-                        file.close()
+                        # file.close()
                         #print('write into file: to-%s:%s' % (text, rowid))
                     if elem.tag == 'cc':
-                        file = open("phase1output/emails.txt", "a")
+                        # file = open("phase1output/emails.txt", "a")
                         file.write('cc-%s:%s\n' % (text, rowid))
-                        file.close()
+                        # file.close()
                         #print('write into file: cc-%s:%s' % (text, rowid))
                     elif elem.tag == 'bcc':
-                        file = open("phase1output/emails.txt", "a")
+                        # file = open("phase1output/emails.txt", "a")
                         file.write('bcc-%s:%s\n' % (text, rowid))
-                        file.close()
+                        # file.close()
                         #print('write into file: bcc-%s:%s' % (text, rowid))
         elif event == 'end':
             print(end='')
             elem.clear()
+    file.close()
 
 def create_dates(xmlInput):
-    xml_iter = ElementTree.iterparse(xmlInput, events = ('start','end'))
+    xml_iter = cElementTree.iterparse(xmlInput, events = ('start','end'))
     open("phase1output/dates.txt", 'w').close()
+    file = open("phase1output/dates.txt", "a")
     for event, elem in xml_iter:
         text = ''
         if event == 'start':
@@ -93,49 +98,51 @@ def create_dates(xmlInput):
                 rowid = elem.text
             if elem.tag == 'date':
                 date = elem.text
-                file = open("phase1output/dates.txt", "a")
+                # file = open("phase1output/dates.txt", "a")
                 file.write('%s:%s\n' % (date, rowid))
-                file.close()
+                # file.close()
                 #print('write into file: %s:%s' % (date, rowid))
         elif event == 'end':
             elem.clear()
+    file.close()
 
-def get_rowid(elem):
-    row = elem.find('row')
-    if row != None:
-        id = row.text
-        file = open("phase1output/recs.txt", "a")
-        file.write(id)
-        #file.write('<%s>' % elem.tag)
-        file.close()
+# def get_rowid(elem):
+#     row = elem.find('row')
+#     if row != None:
+#         id = row.text
+#         file = open("phase1output/recs.txt", "a")
+#         file.write(id)
+#         #file.write('<%s>' % elem.tag)
+#         file.close()
 
 def create_recs(xmlInput):
-    xml_iter = ElementTree.iterparse(xmlInput, events = ('start','end'))
+    xml_iter = cElementTree.iterparse(xmlInput, events = ('start','end'))
     open("phase1output/recs.txt", 'w').close()
+    file = open("phase1output/recs.txt", "a")
     for event, elem in xml_iter:
         if event == 'start':
             if elem.tag == 'mail':
                 row = elem.find('row')
                 if row != None:
                     id = row.text
-                    file = open("phase1output/recs.txt", "a")
-                    file.write(id)
-                    file.close()
+                    if id != None:
+                        file.write(id)
 
-                text = ElementTree.tostring(elem, short_empty_elements=False)
+                text = cElementTree.tostring(elem, short_empty_elements=False)
 
                 text = text.decode("utf-8")
                 text = text.replace('\n', '&#10;')
-                file = open("phase1output/recs.txt", "a")
+                # file = open("phase1output/recs.txt", "a")
                 file.write(text)
-                file.close()
+                # file.close()
         elif event == 'end':
             if elem.tag ==('mail'):
-                file = open("phase1output/recs.txt", "a")
+                # file = open("phase1output/recs.txt", "a")
                 file.write('</%s>' % elem.tag)
                 file.write('\n')
-                file.close()
+                # file.close()
             #elem.clear()
+    file.close()
 
 if __name__ == "__main__":
     xmlInput = input("Name of xml file (default= '1k.xml'): ")

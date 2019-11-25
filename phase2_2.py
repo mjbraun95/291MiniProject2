@@ -23,6 +23,7 @@ def b_terms():
     os.chdir("../phase1output/")
     os.system('sort terms.txt > ../phase2output/term.txt')
     os.chdir("../phase2output/")
+    file = open("tempterms.txt", "a")
     with open('term.txt', 'r') as termfile:
         for line in termfile:
             line = line.strip()
@@ -35,9 +36,9 @@ def b_terms():
             #print(data)
             #database.put(b'%s' % (key), data)
             os.chdir("../phase2output/")
-            file = open("tempterms.txt", "a")
+            
             file.write('%s\n%s\n' % (key, data))
-            file.close()
+    file.close()
     cwd = os.getcwd()
     print(cwd)
     #os.chdir("/cshome/hettiara/Documents/291/291MiniProject2/phase1output/")
@@ -51,19 +52,20 @@ def b_terms():
     #os.remove("output.txt")
     os.system('db_dump -p -f te.idx terms.db')
 
-    try:
-        for key in database.keys():
-            print('{}: {}'.format(key, database[key]))
-    except db.DBPageNotFoundError:
-        os.chdir("../")
-        # b_terms()
-        return
-    result = database.get(b'dave')
-    print(result)
+    # try:
+    #     for key in database.keys():
+    #         print('{}: {}'.format(key, database[key]))
+    # except db.DBPageNotFoundError:
+    #     os.chdir("../")
+    #     # b_terms()
+    #     return
+    result = database.get(b'find')
+    # print(result)
     os.chdir("../")
 
     curs.close()
     database.close()
+    return result
 
 if __name__ == "__main__":
     b_terms()

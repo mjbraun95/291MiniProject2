@@ -15,6 +15,7 @@ def b_dates():
     os.system('sort -u dates.txt > ../phase2output/date.txt')
     os.chdir("../phase2output/")
     #os.system('sort dates.txt > dates.txt')
+    file = open("tempdates.txt", "a")
     with open('date.txt', 'r') as datesfile:
         for line in datesfile:
             line = line.strip()
@@ -28,10 +29,9 @@ def b_dates():
             #print(data)
             #database.put(b'%s' % (key), data)
             os.chdir("../phase2output/")
-            file = open("tempdates.txt", "a")
             #print(key)
             file.write('%s\n%s\n' % (key, data))
-            file.close()
+    file.close()
 
     os.chdir("../phase2output/")
     os.system('db_load -f tempdates.txt -T -t btree dates.db')
@@ -40,20 +40,21 @@ def b_dates():
     #os.remove("dates.txt")
     os.system('db_dump -p -f da.idx dates.db')
 
-    try:
-        for key in database.keys():
-            print('{}: {}'.format(key, database[key]))
-    except db.DBPageNotFoundError:
-        os.chdir("../")
-        b_dates()
-        return
+    # try:
+    #     for key in database.keys():
+    #         print('{}: {}'.format(key, database[key]))
+    # except db.DBPageNotFoundError:
+    #     os.chdir("../")
+    #     b_dates()
+    #     return
 
-    result = database.get(b'2000/10/05')
+    result = database.get(b'2000/12/13')
     print(result)
     os.chdir("../")
 
     curs.close()
     database.close()
+    return result
 
 if __name__ == "__main__":
     b_dates()
