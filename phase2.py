@@ -3,15 +3,6 @@ from bsddb3 import db
 import os
 import shutil
 
-def initDB(DB_File):
-    open("phase2output/re.idx", 'w').close()
-    database = db.DB() #handle for Berkeley DB database
-    os.chdir("phase2output/")
-    
-    database.open(DB_File, None, db.DB_HASH, db.DB_CREATE)
-    os.chdir("../")
-    database.close
-
 if __name__ == "__main__":
     shutil.rmtree("phase2output")
     os.mkdir("phase2output")

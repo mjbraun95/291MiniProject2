@@ -7,7 +7,7 @@ def hash_recs():
     database = db.DB() #handle for Berkeley DB database
     os.chdir("phase2output/")
     DB_File = "recs.db"
-    database.open(DB_File, None, db.DB_BTREE, db.DB_CREATE)
+    database.open(DB_File, None, db.DB_HASH, db.DB_CREATE)
     curs = database.cursor()
     # a hash index on recs.txt with row ids as keys and the full email record as data,
     os.chdir("../phase2output/")
@@ -37,7 +37,7 @@ def hash_recs():
 
     os.chdir("../phase2output/")
     #os.system('qwx')
-    os.system('db_load -f temprecs.txt -T -t btree recs.db')
+    os.system('db_load -f temprecs.txt -T -t hash recs.db')
     os.remove("temprecs.txt")
     os.remove("rec.txt")
     os.system('db_dump -p -f re.idx recs.db')

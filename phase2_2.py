@@ -4,10 +4,15 @@ import os
 
 def b_terms():
     open("phase2output/te.idx", 'w').close()
-    database = db.DB() #handle for Berkeley DB database
     os.chdir("phase2output/")
+    # env = db.DBEnv()
+    database = db.DB() #handle for Berkeley DB database
     DB_File = "terms.db"
     database.open(DB_File, None, db.DB_BTREE, db.DB_CREATE)
+
+    
+    # database.set_flags(database.DB_DUP)
+    # database.set_dup_compare(DB_File)
     curs = database.cursor()
     #os.chdir("C:\\Users\\Ishara\\OneDrive\\University of Alberta\\2019\\YEAR 2\\CMPUT 291\\mini project 2")
     #os.system('sort -u terms.txt > output.txt')
@@ -39,8 +44,9 @@ def b_terms():
     #os.chdir("../phase1output/")
     os.chdir("../phase2output/")
     os.system('db_load -f tempterms.txt -T -t btree terms.db')
-    os.remove("tempterms.txt")
-    os.remove("term.txt")
+    # os.system('db_load -c duplicates=1 -f tempterms.txt -T -t btree terms.db')
+    # os.remove("tempterms.txt")
+    # os.remove("term.txt")
     #os.remove("output.txt")
     os.system('db_dump -p -f te.idx terms.db')
 
